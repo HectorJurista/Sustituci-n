@@ -1,0 +1,36 @@
+import random
+
+def generar_camino(inicio, pasos, dimensiones):
+    """
+    Genera un camino desde un punto inicial, moviéndose en una cuadrícula.
+    
+    :param inicio: (x, y) coordenadas iniciales
+    :param pasos: número de pasos a dar
+    :param dimensiones: (ancho, alto) de la cuadrícula
+    :return: lista de coordenadas [(x1, y1), (x2, y2), ...]
+    """
+    x, y = inicio
+    camino = [inicio]
+    
+    direcciones = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # izquierda, derecha, arriba, abajo
+
+    for _ in range(pasos):
+        dx, dy = random.choice(direcciones)
+        nuevo_x = max(0, min(x + dx, dimensiones[0] - 1))
+        nuevo_y = max(0, min(y + dy, dimensiones[1] - 1))
+        x, y = nuevo_x, nuevo_y
+        camino.append((x, y))
+    
+    return camino
+
+
+# Ejemplo de uso
+inicio = (5, 5)
+dimensiones = (10, 10)
+pasos = 20
+
+camino_generado = generar_camino(inicio, pasos, dimensiones)
+
+print("Camino generado:")
+for punto in camino_generado:
+    print(punto)
