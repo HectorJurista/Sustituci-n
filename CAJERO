@@ -1,0 +1,71 @@
+class CajeroAutomatico:
+    def __init__(self, usuario, pin, saldo=0):
+        self.usuario = usuario
+        self.pin = pin
+        self.saldo = saldo
+
+    def autenticar(self, pin_ingresado):
+        return self.pin == pin_ingresado
+
+    def consultar_saldo(self):
+        print(f"Saldo actual: ${self.saldo}")
+
+    def retirar(self, monto):
+        if monto <= 0:
+            print("Monto inválido.")
+        elif monto > self.saldo:
+            print("Fondos insuficientes.")
+        else:
+            self.saldo -= monto
+            print(f"Retiro exitoso de ${monto}. Saldo restante: ${self.saldo}")
+
+    def depositar(self, monto):
+        if monto <= 0:
+            print("Monto inválido.")
+        else:
+            self.saldo += monto
+            print(f"Depósito exitoso de ${monto}. Nuevo saldo: ${self.saldo}")
+
+
+def menu():
+    print("\n--- CAJERO AUTOMÁTICO ---")
+    print("1. Consultar saldo")
+    print("2. Retirar dinero")
+    print("3. Depositar dinero")
+    print("4. Salir")
+
+
+# Ejecución del programa
+if __name__ == "__main__":
+    usuario = CajeroAutomatico("Héctor Ortiz", pin="1234", saldo=1000)
+
+    intentos = 0
+    while intentos < 3:
+        pin = input("Ingrese su PIN: ")
+        if usuario.autenticar(pin):
+            print(f"Bienvenido, {usuario.usuario}.")
+
+            while True:
+                menu()
+                opcion = input("Seleccione una opción: ")
+
+                if opcion == "1":
+                    usuario.consultar_saldo()
+                elif opcion == "2":
+                    monto = float(input("Ingrese monto a retirar: "))
+                    usuario.retirar(monto)
+                elif opcion == "3":
+                    monto = float(input("Ingrese monto a depositar: "))
+                    usuario.depositar(monto)
+                elif opcion == "4":
+                    print("Gracias por usar el cajero automático.")
+                    break
+                else:
+                    print("Opción inválida. Intente de nuevo.")
+            break
+        else:
+            print("PIN incorrecto.")
+            intentos += 1
+
+    if intentos == 3:
+        print("Demasiados intentos fallidos. Tarjeta bloqueada.")
